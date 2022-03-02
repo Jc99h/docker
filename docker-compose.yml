@@ -1,0 +1,39 @@
+version: "3.8"
+
+services:
+  postgres:
+    build:
+      context: .
+      target: postgres
+    container_name: postgres
+    environment:
+    - POSTGRES_USER=root
+    - POSTGRES_PASSWORD=root
+    - POSTGRES_DB=prueba
+    networks:
+      - network1
+    volumes:
+      - backup:/var/lib/postgresql/data
+
+  nginx:
+    build:
+      context: .
+      target: nginx
+    container_name: nginx
+    networks:
+      - network1
+      - network2
+
+  alpine:
+    image: alpine
+    container_name: alpine
+    stdin_open: true
+    networks:
+      - network2
+
+networks:
+  network1:
+  network2:
+
+volumes:
+  backup:
